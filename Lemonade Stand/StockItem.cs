@@ -3,6 +3,11 @@
     public class StockItem
     {
         /// <summary>
+        /// The ID of the product in stock
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
         /// The product in the stock
         /// </summary>
         public Product Product { get; set; }
