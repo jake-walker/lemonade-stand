@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace Lemonade_Stand
 {
@@ -18,7 +14,6 @@ namespace Lemonade_Stand
             if (!_created)
             {
                 _created = true;
-                //Database.EnsureDeleted();
                 Database.EnsureCreated();
             }
         }
