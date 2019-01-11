@@ -35,6 +35,13 @@ namespace Lemonade_Stand
             // Say which user is logged in.
             Console.WriteLine($"Welcome worker {user.Id}!");
 
+            var action = Menu("What would you like to do?", "New Order", "Logout & Quit");
+
+            if (action == "New Order")
+            {
+                // TODO: Place order
+            }
+
             // Ask the user to press enter to exit or the window would disappear too quickly to read.
             Console.WriteLine("Press enter to exit...");
             Console.ReadLine();
@@ -101,6 +108,47 @@ namespace Lemonade_Stand
 
             Console.WriteLine("");
             return output;
+        }
+
+        /// <summary>
+        /// Display a menu and handle user inputs
+        /// </summary>
+        /// <param name="prompt">The message to display to the user</param>
+        /// <param name="items">The items that the user will be able to pick</param>
+        /// <returns>The item that the user chose</returns>
+        private static string Menu(string prompt, params string[] items)
+        {
+            var current = 0;
+            var done = false;
+
+            while (!done)
+            {
+                Console.Clear();
+                Console.WriteLine($"\n{prompt}");
+                Console.WriteLine("Press the up and down arrow keys to change items and the enter key to confirm a selection.");
+
+                for (var i = 0; i < items.Length; i++)
+                {
+                    Console.WriteLine($" {(i == current ? '>' : '-')} {items[i]}");
+                }
+
+                var k = Console.ReadKey(true);
+
+                switch (k.Key)
+                {
+                    case ConsoleKey.UpArrow when current > 0:
+                        current -= 1;
+                        break;
+                    case ConsoleKey.DownArrow when (current + 1) < items.Length:
+                        current += 1;
+                        break;
+                    case ConsoleKey.Enter:
+                        done = true;
+                        break;
+                }
+            }
+
+            return items[current];
         }
             
     }
