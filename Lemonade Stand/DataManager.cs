@@ -26,6 +26,14 @@ namespace Lemonade_Stand
             optionBuilder.UseSqlite($"Data Source={directory}");
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StockItem>().Property(i => i.Id).HasDefaultValue(Guid.NewGuid().ToString());
+            modelBuilder.Entity<StockItem>().Property(i => i.Quantity).HasDefaultValue(0);
+
+            modelBuilder.Entity<Transaction>().Property(t => t.Id).HasDefaultValue(Guid.NewGuid().ToString());
+        }
+
         /// <summary>
         /// A database set for storing stock information.
         /// </summary>
