@@ -32,6 +32,8 @@ namespace Lemonade_Stand
             modelBuilder.Entity<StockItem>().Property(i => i.Quantity).HasDefaultValue(0);
 
             modelBuilder.Entity<Transaction>().Property(t => t.Id).HasDefaultValue(Guid.NewGuid().ToString());
+
+            modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
         }
 
         /// <summary>
@@ -43,5 +45,10 @@ namespace Lemonade_Stand
         /// A database set for storing transaction information.
         /// </summary>
         public DbSet<Transaction> Transactions { get; set; }
+
+        /// <summary>
+        /// A database set for storing worker information.
+        /// </summary>
+        public DbSet<User> Users { get; set; }
     }
 }

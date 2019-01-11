@@ -1,4 +1,7 @@
-﻿namespace Lemonade_Stand
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Lemonade_Stand
 {
     public class StockItem
     {

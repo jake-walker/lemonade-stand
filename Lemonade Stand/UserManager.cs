@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Lemonade_Stand
 {
-    class UserManager
+    public class UserManager
     {
+        /// <summary>
+        /// The data manager object to use for storing/retrieving data
+        /// </summary>
+        private readonly DataManager _dataManager;
+
         /// <summary>
         /// An object containing the logged in user.
         /// </summary>
@@ -18,9 +20,9 @@ namespace Lemonade_Stand
         /// </summary>
         public bool IsLoggedIn => CurrentUser != null;
 
-        public UserManager()
+        public UserManager(DataManager dataManager)
         {
-            
+            _dataManager = dataManager;
         }
 
         /// <summary>
@@ -31,9 +33,30 @@ namespace Lemonade_Stand
         /// <returns>A boolean to show whether the login was successful</returns>
         public bool Login(string username, string password)
         {
-            // TODO: check username and password against database
+            if (!int.TryParse(username, out var id))
+            {
+                return false;
+            }
 
-            return username == "a" && password == "a";
+            if (string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+
+            var user = _dataManager.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            if (user.Password != password)
+            {
+                return false;
+            }
+
+            CurrentUser = user;
+            return true;
         }
 
         /// <summary>
@@ -49,6 +72,23 @@ namespace Lemonade_Stand
 
             CurrentUser = null;
             return true;
+        }
+
+        /// <summary>
+        /// Create a new user in the database
+        /// </summary>
+        /// <param name="password">The password for the worker</param>
+        /// <returns>A generated worker ID</returns>
+        public int AddUser(string password)
+        {
+            var entity = _dataManager.Users.Add(new User()
+            {
+                Password = password
+            });
+
+            _dataManager.SaveChanges();
+
+            return entity.Entity.Id;
         }
     }
 }
