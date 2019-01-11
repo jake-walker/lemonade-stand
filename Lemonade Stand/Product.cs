@@ -6,10 +6,26 @@ using System.Threading.Tasks;
 
 namespace Lemonade_Stand
 {
-    class Product
+    public class Product
     {
-        public int Id { get; set; }
+        /// <summary>
+        /// Product ID
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Product Name
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Product Category (e.g food, drink)
+        /// </summary>
+        public string Category { get; set; }
+
+        /// <summary>
+        /// Product Price
+        /// </summary>
         public float Price { get; set; }
     }
 }

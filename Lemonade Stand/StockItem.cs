@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Lemonade_Stand
 {
-    public class Transaction
+    public class StockItem
     {
         /// <summary>
-        /// Transaction ID
+        /// The product in the stock
         /// </summary>
-        public string Id { get; set; }
+        public Product Product { get; set; }
 
         /// <summary>
-        /// List of Products that the customer has ordered.
+        /// The amount of the product in the stock
         /// </summary>
-        public List<Product> Order { get; set; }
+        public int Quantity { get; set; }
     }
 }

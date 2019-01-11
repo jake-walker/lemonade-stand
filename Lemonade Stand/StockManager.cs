@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Lemonade_Stand
 {
-    class StockManagement
+    public class StockManager
     {
-        public Dictionary<Product, StockInformation> Stock { get; set; }
+        
     }
 }
