@@ -3,22 +3,22 @@
     public class Product
     {
         /// <summary>
-        /// Product ID
+        ///     Product ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Product Name
+        ///     Product Name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Product Category (e.g food, drink)
+        ///     Product Category (e.g food, drink)
         /// </summary>
         public string Category { get; set; }
 
         /// <summary>
-        /// Product Price
+        ///     Product Price
         /// </summary>
         public float Price { get; set; }
     }

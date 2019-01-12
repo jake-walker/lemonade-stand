@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Lemonade_Stand
 {
-    class Program
+    internal class Program
     {
         private static readonly DataManager DataManager = new DataManager();
 
         private static readonly UserManager UserManager = new UserManager(DataManager);
         private static readonly StockManager StockManager = new StockManager(DataManager);
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var done = false;
             while (!done)
@@ -23,10 +22,7 @@ namespace Lemonade_Stand
                 done = UserManager.Login(username, password);
 
                 // If the login wasn't successful, print out an error message.
-                if (!done)
-                {
-                    Console.WriteLine("The entered credentials were incorrect. Please try again.");
-                }
+                if (!done) Console.WriteLine("The entered credentials were incorrect. Please try again.");
             }
 
             // Get the current user from the manager.
@@ -45,7 +41,8 @@ namespace Lemonade_Stand
                 if (action == "New Order")
                 {
                     // TODO: Place order
-                } else if (action == "Stock Management")
+                }
+                else if (action == "Stock Management")
                 {
                     StockManager.StockEditor();
                 }
@@ -57,7 +54,7 @@ namespace Lemonade_Stand
         }
 
         /// <summary>
-        /// Asks the server for their the username and password
+        ///     Asks the server for their the username and password
         /// </summary>
         /// <param name="message">The display message for the worker</param>
         /// <returns>Tuple of the username and password inputted by the worker</returns>
@@ -70,16 +67,16 @@ namespace Lemonade_Stand
             Console.Write(" ID:       ");
             var id = Console.ReadLine();
             Console.Write(" Password: ");
-            
+
             // Get the password (but mask what the user types)
             var pass = ReadPassword();
 
             // Return the user's ID and password in a tuple.
-            return (Tuple.Create(id, pass));
+            return Tuple.Create(id, pass);
         }
 
         /// <summary>
-        /// Get the users input, masking the input (for passwords)
+        ///     Get the users input, masking the input (for passwords)
         /// </summary>
         /// <returns>A string of what the user types</returns>
         private static string ReadPassword()
@@ -91,7 +88,7 @@ namespace Lemonade_Stand
             {
                 // Get the key that the user presses, intercepting so that it isn't shown to the user.
                 var k = Console.ReadKey(true);
-                
+
                 switch (k.Key)
                 {
                     // If the key is enter, break the loop
@@ -101,7 +98,7 @@ namespace Lemonade_Stand
                     // If the key is backspace and the user has typed something...
                     case ConsoleKey.Backspace when output.Length > 0:
                         // Remove the last character from the output string
-                        output = output.Substring(0, (output.Length - 1));
+                        output = output.Substring(0, output.Length - 1);
                         // Go back a character, print a space then go back another character to ensure that the character is replaced by a space.
                         Console.Write("\b \b");
                         break;
@@ -120,7 +117,7 @@ namespace Lemonade_Stand
         }
 
         /// <summary>
-        /// Display a menu and handle user inputs
+        ///     Display a menu and handle user inputs
         /// </summary>
         /// <param name="prompt">The message to display to the user</param>
         /// <param name="items">The items that the user will be able to pick</param>
@@ -134,12 +131,10 @@ namespace Lemonade_Stand
             {
                 Console.Clear();
                 Console.WriteLine($"{prompt}");
-                Console.WriteLine("Press the up and down arrow keys to change items and the enter key to confirm a selection.");
+                Console.WriteLine(
+                    "Press the up and down arrow keys to change items and the enter key to confirm a selection.");
 
-                for (var i = 0; i < items.Length; i++)
-                {
-                    Console.WriteLine($" {(i == current ? '>' : '-')} {items[i]}");
-                }
+                for (var i = 0; i < items.Length; i++) Console.WriteLine($" {(i == current ? '>' : '-')} {items[i]}");
 
                 var k = Console.ReadKey(true);
 
@@ -148,7 +143,7 @@ namespace Lemonade_Stand
                     case ConsoleKey.UpArrow when current > 0:
                         current -= 1;
                         break;
-                    case ConsoleKey.DownArrow when (current + 1) < items.Length:
+                    case ConsoleKey.DownArrow when current + 1 < items.Length:
                         current += 1;
                         break;
                     case ConsoleKey.Enter:
@@ -161,4 +156,3 @@ namespace Lemonade_Stand
         }
     }
 }
-
