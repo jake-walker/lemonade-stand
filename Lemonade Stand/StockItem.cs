@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Lemonade_Stand
+﻿namespace Lemonade_Stand
 {
     public class StockItem
     {
         /// <summary>
         /// The ID of the product in stock
         /// </summary>
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// The product in the stock

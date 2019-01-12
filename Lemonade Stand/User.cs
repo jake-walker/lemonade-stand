@@ -19,5 +19,10 @@ namespace Lemonade_Stand
         /// The password of the user (plain-text)
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// Whether the user has elevated privileges (e.g adding users, editing stock, etc..)
+        /// </summary>
+        public bool Administrator { get; set; }
     }
 }

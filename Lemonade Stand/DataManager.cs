@@ -5,17 +5,15 @@ using System.IO;
 
 namespace Lemonade_Stand
 {
-    public class DataManager : DbContext
+    public sealed class DataManager : DbContext
     {
         private static bool _created = false;
 
         public DataManager()
         {
-            if (!_created)
-            {
-                _created = true;
-                Database.EnsureCreated();
-            }
+            if (_created) return;
+            _created = true;
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
@@ -28,27 +26,42 @@ namespace Lemonade_Stand
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StockItem>().Property(i => i.Id).HasDefaultValue(Guid.NewGuid().ToString());
+            modelBuilder.Entity<StockItem>().Property(i => i.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<StockItem>().Property(i => i.Quantity).HasDefaultValue(0);
 
-            modelBuilder.Entity<Transaction>().Property(t => t.Id).HasDefaultValue(Guid.NewGuid().ToString());
+            modelBuilder.Entity<Transaction>().Property(t => t.Id).ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<User>().HasData(new User()
+            {
+                Id = 1,
+                Administrator = true,
+                Password = "Password"
+            });
             modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
         }
+
+        
 
         /// <summary>
         /// A database set for storing stock information.
         /// </summary>
-        public DbSet<StockItem> Stock { get; set; }
+        public Microsoft.EntityFrameworkCore.DbSet<StockItem> Stock { get; set; }
 
         /// <summary>
         /// A database set for storing transaction information.
         /// </summary>
-        public DbSet<Transaction> Transactions { get; set; }
+        public Microsoft.EntityFrameworkCore.DbSet<Transaction> Transactions { get; set; }
 
         /// <summary>
         /// A database set for storing worker information.
         /// </summary>
-        public DbSet<User> Users { get; set; }
+        public Microsoft.EntityFrameworkCore.DbSet<User> Users { get; set; }
+
+        /// <summary>
+        /// A database set for storing products.
+        /// </summary>
+        public Microsoft.EntityFrameworkCore.DbSet<Product> Products { get; set; }
     }
 }

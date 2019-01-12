@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Lemonade_Stand
 {
@@ -7,13 +9,10 @@ namespace Lemonade_Stand
         private static readonly DataManager DataManager = new DataManager();
 
         private static readonly UserManager UserManager = new UserManager(DataManager);
-        private static readonly StockManager StockManager = new StockManager();
+        private static readonly StockManager StockManager = new StockManager(DataManager);
 
         static void Main(string[] args)
         {
-            //var workerid = UserManager.AddUser("asdf");
-            //Console.WriteLine($"Created a user with ID of {workerid}");
-
             var done = false;
             while (!done)
             {
@@ -35,15 +34,25 @@ namespace Lemonade_Stand
             // Say which user is logged in.
             Console.WriteLine($"Welcome worker {user.Id}!");
 
-            var action = Menu("What would you like to do?", "New Order", "Logout & Quit");
+            Thread.Sleep(1000);
 
-            if (action == "New Order")
+            var action = "";
+
+            while (action != "Logout & Quit")
             {
-                // TODO: Place order
+                action = Menu("What would you like to do?", "New Order", "Stock Management", "Logout & Quit");
+
+                if (action == "New Order")
+                {
+                    // TODO: Place order
+                } else if (action == "Stock Management")
+                {
+                    StockManager.StockEditor();
+                }
             }
 
             // Ask the user to press enter to exit or the window would disappear too quickly to read.
-            Console.WriteLine("Press enter to exit...");
+            Console.WriteLine("\nPress enter to exit...");
             Console.ReadLine();
         }
 
@@ -52,7 +61,7 @@ namespace Lemonade_Stand
         /// </summary>
         /// <param name="message">The display message for the worker</param>
         /// <returns>Tuple of the username and password inputted by the worker</returns>
-        private static Tuple<string, string> GetCredentials(string message = "\nPlease enter your worker ID and password")
+        private static Tuple<string, string> GetCredentials(string message = "Please enter your worker ID and password")
         {
             // Write out the prompt message
             Console.WriteLine(message);
@@ -124,7 +133,7 @@ namespace Lemonade_Stand
             while (!done)
             {
                 Console.Clear();
-                Console.WriteLine($"\n{prompt}");
+                Console.WriteLine($"{prompt}");
                 Console.WriteLine("Press the up and down arrow keys to change items and the enter key to confirm a selection.");
 
                 for (var i = 0; i < items.Length; i++)
@@ -150,7 +159,6 @@ namespace Lemonade_Stand
 
             return items[current];
         }
-            
     }
 }
 
