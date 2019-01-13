@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,10 @@ namespace Lemonade_Stand
 
         public void StockEditor()
         {
-            var selectedItem = -2;
+            var selectedItem = -1;
             var done = false;
-            var stockItems = _dataManager.Stock.Include(s => s.Product).ToList();
+            var stockItems = _dataManager.Stock.Include(s => s.Product).Include(s => s.Product.Category).ToList();
+            if (stockItems.Count > 0) selectedItem = 0;
 
             while (!done)
             {
@@ -29,7 +31,8 @@ namespace Lemonade_Stand
                 Console.WriteLine("=== STOCK EDITOR ===");
                 Console.WriteLine(
                     "Press the up and down arrows to select an item or action, then press left and right arrows to change stock amount.");
-                Console.WriteLine($" {(selectedItem == -2 ? ">" : "-")} Create a new item");
+                Console.WriteLine($" {(selectedItem == -3 ? ">" : "-")} Create a new category");
+                Console.WriteLine($" {(selectedItem == -2 ? ">" : "-")} Create a new product");
                 Console.WriteLine($" {(selectedItem == -1 ? ">" : "-")} Exit Stock Editor");
                 Console.WriteLine("------------------------------");
 
@@ -37,7 +40,7 @@ namespace Lemonade_Stand
                 {
                     var item = stockItems[i];
                     Console.WriteLine(
-                        $" {(selectedItem == i ? ">" : "-")} {item.Product.Name.Substring(0, item.Product.Name.Length < 10 ? item.Product.Name.Length : 10).PadRight(10)}    < {item.Quantity} >");
+                        $" {(selectedItem == i ? ">" : "-")} [{UiUtils.FixStringLength(item.Product.Category.Name, 6)}] {UiUtils.FixStringLength(item.Product.Name, 15)}  < {item.Quantity} >");
                 }
 
                 var k = Console.ReadKey(true);
@@ -46,7 +49,7 @@ namespace Lemonade_Stand
                 {
                     selectedItem += 1;
                 }
-                else if (k.Key == ConsoleKey.UpArrow && selectedItem > -2)
+                else if (k.Key == ConsoleKey.UpArrow && selectedItem > -3)
                 {
                     selectedItem -= 1;
                 }
@@ -66,55 +69,75 @@ namespace Lemonade_Stand
                 }
                 else if (k.Key == ConsoleKey.Enter && selectedItem == -2)
                 {
-                    stockItems.Add(NewStockEditor());
+                    var newStockItem = NewStockEditor();
+
+                    if (newStockItem == null) continue;
+
+                    // Save new stock item to database
+                    _dataManager.Stock.Add(newStockItem);
+                    _dataManager.SaveChanges();
+                    
+                    // Reload stock from database
+                    stockItems = _dataManager.Stock.Include(s => s.Product).Include(s => s.Product.Category).ToList();
+                } else if (k.Key == ConsoleKey.Enter && selectedItem == -3)
+                {
+                    var newCategory = NewCategoryEditor();
+
+                    if (newCategory == null) continue;
+
+                    // Save new category to database
+                    _dataManager.Categories.Add(newCategory);
+                    _dataManager.SaveChanges();
+
+                    // Reload stock from database
+                    stockItems = _dataManager.Stock.Include(s => s.Product).Include(s => s.Product.Category).ToList();
                 }
             }
         }
 
+        public Category NewCategoryEditor()
+        {
+            Console.Clear();
+            Console.WriteLine("=== NEW CATEGORY ===");
+            var category = (string)UiUtils.Field("Category Name:");
+            return new Category()
+            {
+                Name = category
+            };
+        }
+
         public StockItem NewStockEditor()
         {
-            var item = new StockItem
+            var categories = _dataManager.Categories.ToList();
+
+            if (categories.Count <= 0)
             {
-                Quantity = 0
-            };
-
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("=== NEW STOCK ITEM ===");
-                Console.Write(" Product Name:       ");
-                var name = Console.ReadLine();
-                Console.Write(" Product Category:   ");
-                var category = Console.ReadLine();
-                Console.Write(" Product Price:      ");
-                var price = Console.ReadLine();
-
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    Console.WriteLine("You must type a name!");
-                }
-                else if (string.IsNullOrWhiteSpace(category))
-                {
-                    Console.WriteLine("You must type a category!");
-                }
-                else if (!float.TryParse(price, out var f))
-                {
-                    Console.WriteLine("You must type a valid price!");
-                }
-                else
-                {
-                    var p = new Product
-                    {
-                        Name = name,
-                        Category = category,
-                        Price = f
-                    };
-                    item.Product = p;
-                    return item;
-                }
-
-                Thread.Sleep(2000);
+                return null;
             }
+
+            var categoryStrings = new List<string>();
+
+            foreach (var c in categories)
+            {
+                categoryStrings.Add(c.Name);
+            }
+
+            var categoryInput = UiUtils.Menu("Please select a category for the new item", categoryStrings.ToArray());
+            var category = _dataManager.Categories.First(c => c.Name == categoryInput);
+
+            var name = (string) UiUtils.Field("Product Name:");
+            var price = (float) UiUtils.Field("Product Price:", "float");
+
+            return new StockItem
+            {
+                Quantity = 0,
+                Product = new Product
+                {
+                    Name = name,
+                    Category = category,
+                    Price = price
+                }
+            };
         }
     }
 }

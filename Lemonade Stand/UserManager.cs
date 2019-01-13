@@ -27,13 +27,11 @@ namespace Lemonade_Stand
         /// <summary>
         ///     Login using worker credentials.
         /// </summary>
-        /// <param name="username">The username or ID of the worker</param>
+        /// <param name="id">The username or ID of the worker</param>
         /// <param name="password">The password of the worker</param>
         /// <returns>A boolean to show whether the login was successful</returns>
-        public bool Login(string username, string password)
+        public bool Login(int id, string password)
         {
-            if (!int.TryParse(username, out var id)) return false;
-
             if (string.IsNullOrEmpty(password)) return false;
 
             var user = _dataManager.Users.FirstOrDefault(u => u.Id == id);

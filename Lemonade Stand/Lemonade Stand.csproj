@@ -151,6 +151,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="StockItem.cs" />
     <Compile Include="StockManager.cs" />
     <Compile Include="Transaction.cs" />
+    <Compile Include="UiUtils.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserManager.cs" />
   </ItemGroup>

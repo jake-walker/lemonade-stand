@@ -15,7 +15,7 @@
         /// <summary>
         ///     Product Category (e.g food, drink)
         /// </summary>
-        public string Category { get; set; }
+        public Category Category { get; set; }
 
         /// <summary>
         ///     Product Price

@@ -37,6 +37,11 @@ namespace Lemonade_Stand
         /// </summary>
         public DbSet<Product> Products { get; set; }
 
+        /// <summary>
+        /// A database set for storing categories.
+        /// </summary>
+        public DbSet<Category> Categories { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
             var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -47,9 +52,6 @@ namespace Lemonade_Stand
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StockItem>().Property(i => i.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<StockItem>().Property(i => i.Quantity).HasDefaultValue(0);
-
             modelBuilder.Entity<Transaction>().Property(t => t.Id).ValueGeneratedOnAdd();
 
             modelBuilder.Entity<User>().HasData(new User
@@ -61,6 +63,11 @@ namespace Lemonade_Stand
             modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Category>().Property(c => c.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<StockItem>().Property(i => i.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<StockItem>().Property(i => i.Quantity).HasDefaultValue(0);
         }
     }
 }
