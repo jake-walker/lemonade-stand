@@ -9,6 +9,7 @@ namespace Lemonade_Stand
 
         private static readonly UserManager UserManager = new UserManager(DataManager);
         private static readonly StockManager StockManager = new StockManager(DataManager);
+        private static readonly OrderManager OrderManager = new OrderManager(DataManager);
 
         private static void Main(string[] args)
         {
@@ -22,13 +23,13 @@ namespace Lemonade_Stand
                 done = UserManager.Login(username, password);
 
                 // If the login wasn't successful, print out an error message.
-                if (!done) Console.WriteLine("The entered credentials were incorrect. Please try again.");
+                if (!done) UiUtils.Print("The entered credentials were incorrect. Please try again.", "Danger");
             }
 
             // Get the current user from the manager.
             var user = UserManager.CurrentUser;
             // Say which user is logged in.
-            Console.WriteLine($"Welcome worker {user.Id}!");
+            UiUtils.Print($"Welcome worker {user.Id}!", "Secondary");
 
             Thread.Sleep(1000);
 
@@ -40,7 +41,8 @@ namespace Lemonade_Stand
 
                 if (action == "New Order")
                 {
-                    // TODO: Place order
+                    var t = OrderManager.NewOrder();
+                    Console.WriteLine(t);
                 }
                 else if (action == "Stock Management")
                 {
@@ -49,7 +51,7 @@ namespace Lemonade_Stand
             }
 
             // Ask the user to press enter to exit or the window would disappear too quickly to read.
-            Console.WriteLine("\nPress enter to exit...");
+            UiUtils.Print("\nPress enter to exit...", "Muted");
             Console.ReadLine();
         }
 
@@ -61,7 +63,7 @@ namespace Lemonade_Stand
         private static Tuple<int, string> GetCredentials(string message = "Please enter your worker ID and password")
         {
             // Write out the prompt message
-            Console.WriteLine(message);
+            UiUtils.Print(message, "Primary");
 
             // Ask for the ID and the password
             var id = (int)UiUtils.Field("Worker Id:", "int");

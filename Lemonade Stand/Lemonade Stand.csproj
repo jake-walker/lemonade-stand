@@ -153,6 +153,7 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="DataManager.cs" />
+    <Compile Include="OrderManager.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

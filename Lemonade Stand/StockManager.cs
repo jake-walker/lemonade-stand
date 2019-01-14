@@ -28,19 +28,28 @@ namespace Lemonade_Stand
             while (!done)
             {
                 Console.Clear();
-                Console.WriteLine("=== STOCK EDITOR ===");
-                Console.WriteLine(
-                    "Press the up and down arrows to select an item or action, then press left and right arrows to change stock amount.");
-                Console.WriteLine($" {(selectedItem == -3 ? ">" : "-")} Create a new category");
-                Console.WriteLine($" {(selectedItem == -2 ? ">" : "-")} Create a new product");
-                Console.WriteLine($" {(selectedItem == -1 ? ">" : "-")} Exit Stock Editor");
-                Console.WriteLine("------------------------------");
+                UiUtils.Print("=== STOCK EDITOR ===", "Primary");
+                UiUtils.Print(
+                    "Press the up and down arrows to select an item or action, then press left and right arrows to change stock amount.",
+                    "Muted");
+                UiUtils.Print($" {(selectedItem == -3 ? ">" : "-")} Create a new category", "Secondary");
+                UiUtils.Print($" {(selectedItem == -2 ? ">" : "-")} Create a new product", "Secondary");
+                UiUtils.Print($" {(selectedItem == -1 ? ">" : "-")} Exit Stock Editor", "Secondary");
+                UiUtils.Print("------------------------------", "Muted");
 
                 for (var i = 0; i < stockItems.Count; i++)
                 {
                     var item = stockItems[i];
-                    Console.WriteLine(
-                        $" {(selectedItem == i ? ">" : "-")} [{UiUtils.FixStringLength(item.Product.Category.Name, 6)}] {UiUtils.FixStringLength(item.Product.Name, 15)}  < {item.Quantity} >");
+                    Console.ForegroundColor = UiUtils.ThemeColors["Secondary"];
+                    Console.Write(
+                        $" {(selectedItem == i ? ">" : "-")} ");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write($"[{UiUtils.FixStringLength(item.Product.Category.Name, 6)}] ");
+                    Console.ForegroundColor = UiUtils.ThemeColors["Secondary"];
+                    Console.Write($"{UiUtils.FixStringLength(item.Product.Name, 15)}  ");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"< {item.Quantity} >");
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
 
                 var k = Console.ReadKey(true);
@@ -98,7 +107,7 @@ namespace Lemonade_Stand
         public Category NewCategoryEditor()
         {
             Console.Clear();
-            Console.WriteLine("=== NEW CATEGORY ===");
+            UiUtils.Print("=== NEW CATEGORY ===", "Primary");
             var category = (string)UiUtils.Field("Category Name:");
             return new Category()
             {

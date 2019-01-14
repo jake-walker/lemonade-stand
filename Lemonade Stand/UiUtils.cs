@@ -8,6 +8,15 @@ namespace Lemonade_Stand
 {
     public static class UiUtils
     {
+        public static Dictionary<string, ConsoleColor> ThemeColors = new Dictionary<string, ConsoleColor>()
+        {
+            { "Primary", ConsoleColor.Green },
+            { "Secondary", ConsoleColor.Yellow },
+            { "Danger", ConsoleColor.Red },
+            { "Muted", ConsoleColor.Gray },
+            { "Default", ConsoleColor.White }
+        };
+
         /// <summary>
         ///     Display a menu and handle user inputs
         /// </summary>
@@ -22,11 +31,12 @@ namespace Lemonade_Stand
             while (!done)
             {
                 Console.Clear();
-                Console.WriteLine($"{prompt}");
-                Console.WriteLine(
-                    "Press the up and down arrow keys to change items and the enter key to confirm a selection.");
+                Print($"{prompt}", "Primary");
+                Print(
+                    "Press the up and down arrow keys to change items and the enter key to confirm a selection.",
+                    "Muted");
 
-                for (var i = 0; i < items.Length; i++) Console.WriteLine($" {(i == current ? '>' : '-')} {items[i]}");
+                for (var i = 0; i < items.Length; i++) Print($" {(i == current ? '>' : '-')} {items[i]}", "Secondary");
 
                 var k = Console.ReadKey(true);
 
@@ -57,20 +67,22 @@ namespace Lemonade_Stand
         /// <returns></returns>
         public static object Field(string prompt, string type = "string", bool checkEmpty = true, bool password = false)
         {
-            Console.WriteLine(prompt);
+            Print(prompt, "Primary");
 
             var valid = false;
             object output = false;
 
             while (!valid)
             {
-                Console.Write(" -> ");
+                Print(" -> ", "Muted", false);
+                Console.ForegroundColor = ThemeColors["Secondary"];
                 var response = password ? GetPassword() : Console.ReadLine();
+                Console.ForegroundColor = ThemeColors["Default"];
                 valid = true;
 
                 if (string.IsNullOrWhiteSpace(response) && checkEmpty)
                 {
-                    Console.WriteLine("     - Your input must not be empty.");
+                    Print("    - Your input must not be empty.", "Danger");
                     valid = false;
                 }
 
@@ -80,7 +92,7 @@ namespace Lemonade_Stand
                     {
                         if (!int.TryParse(response, out var intOutput))
                         {
-                            Console.WriteLine("     - Your input must be an integer.");
+                            Print("    - Your input must be an integer.", "Danger");
                             valid = false;
                             continue;
                         }
@@ -92,13 +104,32 @@ namespace Lemonade_Stand
                     {
                         if (!float.TryParse(response, out var floatOutput))
                         {
-                            Console.WriteLine("     - Your input must be a float.");
+                            Print("    - Your input must be a float.", "Danger");
                             valid = false;
                             continue;
                         }
 
                         output = floatOutput;
                         break;
+                    }
+                    case "boolean":
+                    {
+                        var r = response?.ToLower();
+                        if (r == "yes" || r == "y")
+                        {
+                            output = true;
+                            break;
+                        } else if (r == "no" || r == "n")
+                        {
+                            output = false;
+                            break;
+                        }
+                        else
+                        {
+                            Print("    - Your input must be 'yes' or 'no'.", "Danger");
+                            valid = false;
+                            continue;
+                        }
                     }
                     default:
                         output = response;
@@ -159,6 +190,13 @@ namespace Lemonade_Stand
         public static string FixStringLength(string input, int length)
         {
             return input.Substring(0, input.Length < length ? input.Length : length).PadRight(length);
+        }
+
+        public static void Print(string text, string color = "Default", bool newline = true)
+        {
+            Console.ForegroundColor = ThemeColors[color];
+            Console.Write($"{text}{(newline ? "\n" : "")}");
+            Console.ForegroundColor = ThemeColors["Default"];
         }
     }
 }
