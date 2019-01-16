@@ -12,6 +12,6 @@ namespace Lemonade_Stand
         /// <summary>
         ///     List of Products that the customer has ordered.
         /// </summary>
-        public List<Product> Order { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
