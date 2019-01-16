@@ -11,6 +11,9 @@ namespace Lemonade_Stand
     {
         private readonly DataManager _dataManager;
 
+        public float cash = 0.0f;
+        // *** get money from database at beginning of the day
+
         public OrderManager(DataManager dataManager)
         {
             _dataManager = dataManager;
@@ -69,8 +72,9 @@ namespace Lemonade_Stand
             var total = basket.Sum(p => p.Price);
             UiUtils.Print($"Your order is has a total of (£{total:F2})", "Primary");
 
-            Console.WriteLine("Press enter to continue...");
-            Console.ReadLine();
+            Console.WriteLine("Enter amount paid to confirm and continue:");
+            var payment = (float)UiUtils.Field("Payment:", "float");
+            cash -= payment;
 
             t.Order = basket;
 
