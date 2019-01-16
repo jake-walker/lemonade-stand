@@ -17,10 +17,10 @@ namespace Lemonade_Stand
             while (!done)
             {
                 // Fetch the credentials from the user
-                var (username, password) = GetCredentials();
+                var credentials = GetCredentials();
 
                 // If the login is successful, break the loop
-                done = UserManager.Login(username, password);
+                done = UserManager.Login(credentials.Item1, credentials.Item2);
 
                 // If the login wasn't successful, print out an error message.
                 if (!done) UiUtils.Print("The entered credentials were incorrect. Please try again.", "Danger");

@@ -40,17 +40,17 @@ namespace Lemonade_Stand
 
                 var k = Console.ReadKey(true);
 
-                switch (k.Key)
+                if (k.Key == ConsoleKey.UpArrow && current > 0)
                 {
-                    case ConsoleKey.UpArrow when current > 0:
-                        current -= 1;
-                        break;
-                    case ConsoleKey.DownArrow when current + 1 < items.Length:
-                        current += 1;
-                        break;
-                    case ConsoleKey.Enter:
-                        done = true;
-                        break;
+                    current -= 1;
+                }
+                else if (k.Key == ConsoleKey.DownArrow && current + 1 < items.Length)
+                {
+                    current += 1;
+                }
+                else if (k.Key == ConsoleKey.Enter)
+                {
+                    done = true;
                 }
             }
 
@@ -90,7 +90,9 @@ namespace Lemonade_Stand
                 {
                     case "int":
                     {
-                        if (!int.TryParse(response, out var intOutput))
+                        int intOutput;
+
+                        if (!int.TryParse(response, out intOutput))
                         {
                             Print("    - Your input must be an integer.", "Danger");
                             valid = false;
@@ -102,7 +104,9 @@ namespace Lemonade_Stand
                     }
                     case "float":
                     {
-                        if (!float.TryParse(response, out var floatOutput))
+                        float floatOutput;
+
+                        if (!float.TryParse(response, out floatOutput))
                         {
                             Print("    - Your input must be a float.", "Danger");
                             valid = false;
@@ -154,26 +158,26 @@ namespace Lemonade_Stand
                 // Get the key that the user presses, intercepting so that it isn't shown to the user.
                 var k = Console.ReadKey(true);
 
-                switch (k.Key)
+                // If the key is enter, break the loop
+                if (k.Key == ConsoleKey.Enter)
                 {
-                    // If the key is enter, break the loop
-                    case ConsoleKey.Enter:
-                        done = true;
-                        break;
+                    done = true;
+
                     // If the key is backspace and the user has typed something...
-                    case ConsoleKey.Backspace when output.Length > 0:
-                        // Remove the last character from the output string
-                        output = output.Substring(0, output.Length - 1);
-                        // Go back a character, print a space then go back another character to ensure that the character is replaced by a space.
-                        Console.Write("\b \b");
-                        break;
+                }
+                else if (k.Key == ConsoleKey.Backspace && output.Length > 0) {
+                    // Remove the last character from the output string
+                    output = output.Substring(0, output.Length - 1);
+                    // Go back a character, print a space then go back another character to ensure that the character is replaced by a space.
+                    Console.Write("\b \b");
+
                     // For any other key...
-                    default:
-                        // Add the key's character to the output
-                        output += k.KeyChar;
-                        // Print an asterisk to the console
-                        Console.Write("*");
-                        break;
+                } else
+                {
+                    // Add the key's character to the output
+                    output += k.KeyChar;
+                    // Print an asterisk to the console
+                    Console.Write("*");
                 }
             }
 
