@@ -65,7 +65,7 @@ namespace Lemonade_Stand
         /// <param name="checkEmpty">Whether the response shouldn't be empty</param>
         /// <param name="password">Whether the user's input should be masked</param>
         /// <returns></returns>
-        public static object Field(string prompt, string type = "string", bool checkEmpty = true, bool password = false)
+        public static object Field(string prompt, string type = "string", bool checkEmpty = true, bool password = false) //check enough money
         {
             Print(prompt, "Primary");
 

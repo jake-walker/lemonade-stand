@@ -95,9 +95,12 @@ namespace Lemonade_Stand
             // Print our the total
             UiUtils.Print($"Your order is has a total of (£{total:F2})", "Primary");
 
+            // Takes the customers payment amount and calculates change
             Console.WriteLine("Enter amount paid to confirm and continue:");
-            var payment = (float)UiUtils.Field("Payment:", "float");
-            cash -= payment;
+            var payment = (float)UiUtils.Field("Payment:", "float"); // ** needs to be more than the total
+            var change = payment - total;
+            //** print change due
+            cash += payment;
 
             // Add the user's basket to the transaction object
             t.Products = basket;
