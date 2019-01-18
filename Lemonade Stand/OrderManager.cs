@@ -96,12 +96,12 @@ namespace Lemonade_Stand
             UiUtils.Print($"Your order is has a total of (£{total:F2})", "Primary");
 
             // Takes the customers payment amount and calculates change
-            Console.WriteLine("Enter amount paid to confirm and continue:");
+            UiUtils.Print("\nEnter amount paid to confirm and continue:", "Primary");
             var payment = (float)UiUtils.Field("Payment:", "float", biggerThan:total); 
             var change = payment - total;
 
             // Prints change and adds paid amount to the total amount of cash
-            Console.WriteLine($"Your change is {change}");
+            UiUtils.Print($"Your change is (£{change:F2})", "Primary");
             cash += total;
 
             // Ask the user to press enter to exit or the window would disappear too quickly to read.
