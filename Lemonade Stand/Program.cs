@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 
 namespace Lemonade_Stand
@@ -39,12 +39,15 @@ namespace Lemonade_Stand
 
             while (action != "Logout & Quit")
             {
-                action = UiUtils.Menu("What would you like to do?", "New Order", "Stock Management", "Logout & Quit");
+                action = UiUtils.Menu("What would you like to do?", "New Order", "Stock Management", "View Orders", "Logout & Quit");
 
                 if (action == "New Order")
                 {
                     var t = OrderManager.NewOrder();
-                    Console.WriteLine(t);
+                }
+                else if (action == "View Orders")
+                {
+                    OrderManager.OrderViewer();
                 }
                 else if (action == "Stock Management")
                 {

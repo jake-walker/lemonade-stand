@@ -42,6 +42,11 @@ namespace Lemonade_Stand
         /// </summary>
         public DbSet<Category> Categories { get; set; }
 
+        /// <summary>
+        /// A database set for storing order info.
+        /// </summary>
+        public DbSet<OrderInfo> OrderInfos { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
             // Get the user's documents and add on the name of the database file.

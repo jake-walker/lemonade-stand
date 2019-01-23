@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +19,73 @@ namespace Lemonade_Stand
             _dataManager = dataManager;
         }
 
-        public Transaction NewOrder()
+        public void OrderViewer()
+        {
+            var orderIds = _dataManager.OrderInfos.Select(o => o.Id).ToList();
+            orderIds.Add("<BACK>");
+
+            while (true)
+            {
+                var response = UiUtils.Menu("Select an Order ID:", orderIds.ToArray());
+                if (response == "<BACK>")
+                {
+                    return;
+                }
+                else
+                {
+                    var orderInfo = _dataManager.OrderInfos.FirstOrDefault(o => o.Id == response);
+                    var transactions = _dataManager.Transactions.Where(t => t.OrderId == response).Include(t => t.Product).ToList();
+
+                    if (orderInfo == null && !transactions.Any())
+                    {
+                        UiUtils.Print("That order is invalid!", "Danger");
+                        UiUtils.Print("Press enter to continue...", "Muted");
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    Console.Clear();
+                    UiUtils.Print($"== ORDER {orderInfo.Id} ==", "Primary");
+                    UiUtils.Print($"Order Total:         £{orderInfo.Total:F2}", "Secondary");
+
+                    foreach (var item in transactions)
+                    {
+                        UiUtils.Print("====================================================", "Muted");
+                        UiUtils.Print($"Item ID:             {item.Product.Id}", "Secondary");
+                        UiUtils.Print($"Item Name:           {item.Product.Name}", "Secondary");
+                        UiUtils.Print($"Item Price:          £{item.Product.Price:F2}", "Secondary");
+                        UiUtils.Print($"Item Category:       {item.Product.Category}", "Secondary");
+                    }
+
+                    UiUtils.Print("Press enter to continue...", "Muted");
+                    Console.ReadLine();
+                }
+            }
+        }
+
+        public OrderInfo StoreOrder(List<Product> products)
+        {
+            var orderId = Guid.NewGuid().ToString();
+            var info = new OrderInfo {Id = orderId, Total = products.Sum(p => p.Price)};
+            var transactions = new List<Transaction>();
+
+            foreach (var product in products)
+            {
+                transactions.Add(new Transaction
+                {
+                    OrderId = orderId,
+                    Product = product
+                });
+            }
+
+            _dataManager.OrderInfos.Add(info);
+            _dataManager.Transactions.AddRange(transactions);
+            _dataManager.SaveChanges();
+
+            return info;
+        }
+
+        public OrderInfo NewOrder()
         {
             // Create a new transaction object.
             var t = new Transaction();
@@ -102,15 +168,14 @@ namespace Lemonade_Stand
             //** print change due
             cash += payment;
 
-            // Add the user's basket to the transaction object
-            t.Products = basket;
+            var orderInfo = StoreOrder(basket);
 
-            // Add the transaction to the database
-            _dataManager.Transactions.Add(t);
-            _dataManager.SaveChanges();
+            UiUtils.Print($"Thank you for your order! Your order reference is {orderInfo.Id}.", "Muted");
+            UiUtils.Print("Press enter to continue...", "Muted");
+            Console.ReadLine();
 
             // Return the transaction object.
-            return t;
+            return orderInfo;
         }
 
         /// <summary>
@@ -144,7 +209,7 @@ namespace Lemonade_Stand
                     if (response)
                     {
                         // Remove the item from the basket
-                        items.Remove(stock.Product);
+                        //items.Remove(stock.Product);
                     }
                     else
                     {

@@ -154,6 +154,7 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="DataManager.cs" />
+    <Compile Include="OrderInfo.cs" />
     <Compile Include="OrderManager.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
