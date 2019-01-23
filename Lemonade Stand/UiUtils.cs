@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,7 +61,7 @@ namespace Lemonade_Stand
         /// Asks the user a question, validates the response then returns a validated value.
         /// </summary>
         /// <param name="prompt">The question to display to the user</param>
-        /// <param name="type">The type that needs to be returned (e.g string, int, float)</param>
+        /// <param name="type">The type that needs to be returned (e.g string, int, decimal)</param>
         /// <param name="checkEmpty">Whether the response shouldn't be empty</param>
         /// <param name="password">Whether the user's input should be masked</param>
         /// <returns></returns>

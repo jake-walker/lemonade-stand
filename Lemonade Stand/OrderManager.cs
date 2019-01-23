@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ namespace Lemonade_Stand
     {
         private readonly DataManager _dataManager;
 
-        public float cash = 0.0f;
+        public decimal cash = 0.0M;
         // *** get money from database at beginning of the day
 
         public OrderManager(DataManager dataManager)
@@ -97,7 +97,7 @@ namespace Lemonade_Stand
 
             // Takes the customers payment amount and calculates change
             Console.WriteLine("Enter amount paid to confirm and continue:");
-            var payment = (float)UiUtils.Field("Payment:", "float"); // ** needs to be more than the total
+            var payment = (decimal)UiUtils.Field("Payment:", "decimal"); // ** needs to be more than the total
             var change = payment - total;
             //** print change due
             cash += payment;

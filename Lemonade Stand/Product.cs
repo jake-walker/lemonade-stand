@@ -20,6 +20,6 @@
         /// <summary>
         ///     Product Price
         /// </summary>
-        public float Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

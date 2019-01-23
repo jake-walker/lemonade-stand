@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -135,7 +135,7 @@ namespace Lemonade_Stand
             var category = _dataManager.Categories.First(c => c.Name == categoryInput);
 
             var name = (string) UiUtils.Field("Product Name:");
-            var price = (float) UiUtils.Field("Product Price:", "float");
+            var price = (decimal) UiUtils.Field("Product Price:", "decimal");
 
             return new StockItem
             {
