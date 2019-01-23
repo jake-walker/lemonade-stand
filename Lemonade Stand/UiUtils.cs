@@ -102,18 +102,18 @@ namespace Lemonade_Stand
                         output = intOutput;
                         break;
                     }
-                    case "float":
+                    case "decimal":
                     {
-                        float floatOutput;
+                        decimal decimalOutput;
 
-                        if (!float.TryParse(response, out floatOutput))
+                        if (!decimal.TryParse(response, out decimalOutput))
                         {
-                            Print("    - Your input must be a float.", "Danger");
+                            Print("    - Your input must be a decimal.", "Danger");
                             valid = false;
                             continue;
                         }
 
-                        output = floatOutput;
+                        output = decimalOutput;
                         break;
                     }
                     case "boolean":
