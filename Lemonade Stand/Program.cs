@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 
 namespace Lemonade_Stand
@@ -13,6 +13,8 @@ namespace Lemonade_Stand
 
         private static void Main(string[] args)
         {
+            UiUtils.WelcomeMessage();
+
             var done = false;
             while (!done)
             {

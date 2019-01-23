@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +16,14 @@ namespace Lemonade_Stand
             { "Muted", ConsoleColor.Gray },
             { "Default", ConsoleColor.White }
         };
+
+        /// <summary>
+        /// Print out the header message.
+        /// </summary>
+        public static void WelcomeMessage()
+        {
+            UiUtils.Print("   __                               __      ______               __\r\n  / /  ___ __ _  ___  ___  ___ ____/ /__   / __/ /____ ____  ___/ /\r\n / /__/ -_)  ' \\/ _ \\/ _ \\/ _ `/ _  / -_) _\\ \\/ __/ _ `/ _ \\/ _  / \r\n/____/\\__/_/_/_/\\___/_//_/\\_,_/\\_,_/\\__/ /___/\\__/\\_,_/_//_/\\_,_/  \r\n                                                                   ", "Primary");
+        }
 
         /// <summary>
         ///     Display a menu and handle user inputs
