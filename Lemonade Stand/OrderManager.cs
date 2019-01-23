@@ -163,11 +163,20 @@ namespace Lemonade_Stand
 
             // Takes the customers payment amount and calculates change
             Console.WriteLine("Enter amount paid to confirm and continue:");
-            var payment = (decimal)UiUtils.Field("Payment:", "decimal"); // ** needs to be more than the total
+            var payment = (decimal)UiUtils.Field("Payment:", "decimal", biggerThan:total); // ** needs to be more than the total
             var change = payment - total;
-            //** print change due
-            cash += payment;
 
+            // Prints change and adds paid amount to the total amount of cash
+            UiUtils.Print($"Your change is (£{change:F2})", "Primary");
+            cash += total;
+
+            // Ask the user to press enter to exit or the window would disappear too quickly to read.
+            UiUtils.Print("Press enter to confirm", "Muted");
+            Console.ReadLine();
+
+            // Add the user's basket to the transaction object
+            t.Products = basket;
+            
             var orderInfo = StoreOrder(basket);
 
             UiUtils.Print($"Thank you for your order! Your order reference is {orderInfo.Id}.", "Muted");

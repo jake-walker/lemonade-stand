@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,7 +73,7 @@ namespace Lemonade_Stand
         /// <param name="checkEmpty">Whether the response shouldn't be empty</param>
         /// <param name="password">Whether the user's input should be masked</param>
         /// <returns></returns>
-        public static object Field(string prompt, string type = "string", bool checkEmpty = true, bool password = false) //check enough money
+        public static object Field(string prompt, string type = "string", bool checkEmpty = true, bool password = false, float biggerThan = -1) 
         {
             Print(prompt, "Primary");
 
@@ -117,6 +117,13 @@ namespace Lemonade_Stand
                         if (!decimal.TryParse(response, out decimalOutput))
                         {
                             Print("    - Your input must be a decimal.", "Danger");
+                            valid = false;
+                            continue;
+                        }
+
+                        if (decimalOutput < biggerThan)
+                        {
+                            Print($"    - You input must be more than {biggerThan}", "Danger");
                             valid = false;
                             continue;
                         }
