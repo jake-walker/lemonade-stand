@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -173,9 +173,6 @@ namespace Lemonade_Stand
             // Ask the user to press enter to exit or the window would disappear too quickly to read.
             UiUtils.Print("Press enter to confirm", "Muted");
             Console.ReadLine();
-
-            // Add the user's basket to the transaction object
-            t.Products = basket;
             
             var orderInfo = StoreOrder(basket);
 
