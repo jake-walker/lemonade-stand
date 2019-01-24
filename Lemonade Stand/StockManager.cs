@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -62,11 +62,11 @@ namespace Lemonade_Stand
                 {
                     selectedItem -= 1;
                 }
-                else if (k.Key == ConsoleKey.LeftArrow && stockItems[selectedItem].Quantity > 0)
+                else if (k.Key == ConsoleKey.LeftArrow && stockItems[selectedItem].Quantity > 0 && selectedItem >= 0)
                 {
                     stockItems[selectedItem].Quantity -= 1;
                 }
-                else if (k.Key == ConsoleKey.RightArrow)
+                else if (k.Key == ConsoleKey.RightArrow && selectedItem >= 0)
                 {
                     stockItems[selectedItem].Quantity += 1;
                 }
